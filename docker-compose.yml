@@ -1,0 +1,65 @@
+version: '3.8'
+
+services:
+
+  nginx:
+    build:
+      context: ./gateway
+      dockerfile: Dockerfile
+    ports:
+      - "${NGINX_PORT}:80"
+    depends_on:
+      - userservice_container_1
+      - userservice_container_2
+
+
+  userservice_container_1:
+    build:
+      context: ./userservice
+      dockerfile: Dockerfile
+    ports:
+      - "${USERSERVICE_CONTAINER_PORT_1}:8000"
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: '256M'
+
+  userservice_container_2:
+    build:
+      context: ./userservice
+      dockerfile: Dockerfile
+    ports:
+      - "${USERSERVICE_CONTAINER_PORT_2}:8000"
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: '256M'
+
+  redis:
+    build:
+      context: ./redis
+      dockerfile: Dockerfile
+    ports:
+      - "${REDIS_PORT}:6379"
+    environment:
+      - REDIS_PASSWORD=pesto
+
+  rabbitmq:
+    build:
+      context: ./rabbitmq
+      dockerfile: Dockerfile
+    ports:
+      - "${RABBITMQ_PORT}:5672"
+      - "${RABBITMQ_MANAGEMENT_PORT}:15672"
+
+  prometheus:
+    image: prom/prometheus
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+    ports:
+      - "${PROMETHEUS_PORT}:9090"
+    depends_on:
+      - userservice_container_1
+      - userservice_container_2
