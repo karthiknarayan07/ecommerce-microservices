@@ -12,5 +12,5 @@ for SERVICE_DIR in $BASE_DIR/*/; do
   fi
 done
 
-docker-compose build
-docker-compose up -d
+docker compose build
+docker compose up

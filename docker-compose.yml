@@ -19,11 +19,11 @@ services:
       dockerfile: Dockerfile
     ports:
       - "${USERSERVICE_CONTAINER_PORT_1}:8000"
-    deploy:
-      resources:
-        limits:
-          cpus: '0.5'
-          memory: '256M'
+    # deploy:
+    #   resources:
+    #     limits:
+    #       cpus: '0.5'
+    #       memory: '256M'
 
   userservice_container_2:
     build:
@@ -31,11 +31,11 @@ services:
       dockerfile: Dockerfile
     ports:
       - "${USERSERVICE_CONTAINER_PORT_2}:8000"
-    deploy:
-      resources:
-        limits:
-          cpus: '0.5'
-          memory: '256M'
+    # deploy:
+    #   resources:
+    #     limits:
+    #       cpus: '0.5'
+    #       memory: '256M'
 
   redis:
     build:

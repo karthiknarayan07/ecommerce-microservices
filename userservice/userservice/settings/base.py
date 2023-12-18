@@ -119,10 +119,10 @@ PROMETHEUS_METRIC_EXPORT_URL = "/metrics/"
 CACHES = {
     'default': {
         'BACKEND': 'django_redis.cache.RedisCache',
-        'LOCATION': 'redis://4.240.108.227:8020/0',
+        'LOCATION': 'redis://20.40.54.159:8020/0',
         'OPTIONS': {
             'CLIENT_CLASS': 'django_redis.client.DefaultClient',
         },
-        'TIMEOUT': 120
+        'TIMEOUT': 8040
     }
 }

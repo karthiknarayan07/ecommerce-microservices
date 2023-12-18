@@ -42,7 +42,8 @@ class TestView(APIView):
     def get(self, request):
         print("i am being called test api")
         try:
-            value = cache.get('pesto')
+            # value = cache.get('pesto')
+            value=78965
             resp ={
                 'message': 'Hello World user service',
                 'cache':value
