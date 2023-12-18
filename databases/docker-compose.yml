@@ -15,6 +15,20 @@ services:
     volumes:
       - user_db_data:/var/lib/postgresql/data
 
+  postgres-communicationservice:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: communication_db_container
+    ports:
+      - "${COMMUNICATION_DB_PORT}:5432"
+    environment:
+      POSTGRES_DB: communication_db
+      POSTGRES_USER: karthik
+      POSTGRES_PASSWORD: password
+    volumes:
+      - communication_db_data:/var/lib/postgresql/data
+
   postgres-productservice:
     build:
       context: .
@@ -45,5 +59,6 @@ services:
 
 volumes:
   user_db_data:
+  communication_db_data:
   product_db_data:
   order_db_data:
