@@ -12,6 +12,7 @@ import redis
 
 from conf.jwt_auth import GenerateAccessToken,GenerateRefreshToken
 
+from conf.rabbit_sender import rabbitconnection
 
 
 
@@ -114,6 +115,12 @@ class RegisterView(APIView):
                     'refresh_token':str(refresh_token),
                     'access_token':str(access_token)
                 }
+                payload = {
+                    'identifier': '1',
+                    'user_id': user.pk,
+                    'mobile': mobile,
+                }
+                rabbitconnection(message=password, queue='user_queue')
                 # save refresh token in user tokens table
                 return CustomResponse().successResponse(data=data)
             

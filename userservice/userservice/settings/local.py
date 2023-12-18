@@ -12,3 +12,7 @@ DATABASES = {
         'PORT': '8015',
     }
 }
+
+RABBIT_USERNAME = 'karthik'
+RABBIT_PASSWORD = 'password'
+RABBIT_HOST = '20.40.54.159'
