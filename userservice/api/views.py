@@ -10,6 +10,8 @@ from django.contrib.auth.hashers import make_password, check_password
 from django.core.cache import cache
 import redis
 
+from conf.jwt_auth import GenerateAccessToken,GenerateRefreshToken
+
 
 
 
@@ -49,5 +51,76 @@ class TestView(APIView):
                 'cache':value
             }
             return CustomResponse().successResponse(data=resp)
+        except Exception as error:
+            return CustomResponse().errorResponse(data=str(error))
+        
+        
+
+
+class LoginView(APIView):
+    permission_classes = (AllowAny,)
+    
+    def post(self,request):
+        try:
+            
+            mobile = request.data.get('mobile')
+            password = request.data.get('password')
+            
+            if not mobile or not password:
+                return CustomResponse().errorResponse(description="mobile and password are required")
+            
+            user = UserMaster.objects.filter(mobile=mobile).first()
+            
+            if user and check_password(password, user.password):
+                refresh_token = GenerateRefreshToken(user)
+                access_token = GenerateAccessToken(user)
+                data = {
+                    'refresh_token':str(refresh_token),
+                    'access_token':str(access_token)
+                }
+                # save refresh token in user tokens table
+                return CustomResponse().successResponse(data=data)
+            
+            response = {
+                'status':"invalid login details"
+            }
+            return CustomResponse().errorResponse(data=response)
+        
+        except Exception as error:
+            return CustomResponse().errorResponse(data=str(error))
+        
+        
+        
+class RegisterView(APIView):
+    permission_classes = (AllowAny,)
+    
+    def post(self,request):
+        try:
+            
+            mobile = request.data.get('mobile')
+            password = request.data.get('password')
+            
+            if not mobile or not password:
+                return CustomResponse().errorResponse(description="mobile and password are required to login")
+            
+            user = UserMaster(mobile=mobile,password=make_password(password))
+            user.custom_permissions = ['is_enduser']
+            user.save()
+            
+            if user:
+                refresh_token = GenerateRefreshToken(user)
+                access_token = GenerateAccessToken(user)
+                data = {
+                    'refresh_token':str(refresh_token),
+                    'access_token':str(access_token)
+                }
+                # save refresh token in user tokens table
+                return CustomResponse().successResponse(data=data)
+            
+            response = {
+                'status':"invalid login details"
+            }
+            return CustomResponse().errorResponse(data=response)
+        
         except Exception as error:
             return CustomResponse().errorResponse(data=str(error))
