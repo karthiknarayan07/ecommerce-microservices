@@ -1,9 +1,11 @@
 FROM redis:latest
 
+WORKDIR /data
+
 EXPOSE 6379
 
 ENV REDIS_PASSWORD pesto
 
 # VOLUME /data
 
-# WORKDIR /data
+CMD ["redis-server"]

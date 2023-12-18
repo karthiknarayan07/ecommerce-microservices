@@ -19,11 +19,6 @@ services:
       dockerfile: Dockerfile
     ports:
       - "${USERSERVICE_CONTAINER_PORT_1}:8000"
-    # deploy:
-    #   resources:
-    #     limits:
-    #       cpus: '0.5'
-    #       memory: '256M'
 
   userservice_container_2:
     build:
@@ -31,11 +26,6 @@ services:
       dockerfile: Dockerfile
     ports:
       - "${USERSERVICE_CONTAINER_PORT_2}:8000"
-    # deploy:
-    #   resources:
-    #     limits:
-    #       cpus: '0.5'
-    #       memory: '256M'
 
   redis:
     build:
@@ -45,6 +35,8 @@ services:
       - "${REDIS_PORT}:6379"
     environment:
       - REDIS_PASSWORD=pesto
+    volumes:
+      - ./redis_data:/data
 
   rabbitmq:
     build:
@@ -63,3 +55,7 @@ services:
     depends_on:
       - userservice_container_1
       - userservice_container_2
+
+
+volumes:
+  redis_data:

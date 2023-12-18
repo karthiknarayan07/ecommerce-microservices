@@ -1,5 +1,6 @@
 asgiref==3.7.2
 Django==5.0
+django-cors-headers==4.3.1
 django-prometheus==2.3.1
 djangorestframework==3.14.0
 django-redis
@@ -7,6 +8,7 @@ gunicorn==21.2.0
 packaging==23.2
 prometheus-client==0.19.0
 psycopg2-binary==2.9.9
+PyJWT==2.8.0
 python-dotenv==1.0.0
 pytz==2023.3.post1
 sqlparse==0.4.4

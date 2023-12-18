@@ -1,13 +1,10 @@
 from pathlib import Path
+from corsheaders.defaults import default_headers
+from corsheaders.defaults import default_methods
 
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
-
-# SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-2d3ks*i5&a^=7*kj0(0(=04^80g@=va0b#v++st=#v=i0n=^2u'
 
 # SECURITY WARNING: don't run with debug turned on in production!
@@ -27,6 +24,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'api.apps.ApiConfig',
+    'corsheaders',
     'rest_framework',
     'django_prometheus'
 ]
@@ -110,12 +108,17 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
-# monitoring
+# CORS settings
+CORS_ORIGIN_ALLOW_ALL = True
+CORS_ALLOW_CREDENTIALS = True
+CORS_ALLOW_METHODS = default_methods
+CORS_ALLOW_HEADERS = list(default_headers)
 
+# monitoring
 PROMETHEUS_METRIC_EXPORT_MIGRATIONS = True
 PROMETHEUS_METRIC_EXPORT_URL = "/metrics/"
 
-
+# redis cache
 CACHES = {
     'default': {
         'BACKEND': 'django_redis.cache.RedisCache',
@@ -126,3 +129,16 @@ CACHES = {
         'TIMEOUT': 8040
     }
 }
+
+# REST framework settings
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated'
+    ),
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'userservice.auth.CustomJWTAuthentication',
+    ),
+}
+
+# jwt secrets
+REFRESH_SECRET_KEY='secret'

@@ -1,0 +1,49 @@
+version: '3.8'
+
+services:
+  postgres-userservice:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: user_db_container
+    ports:
+      - "${USER_DB_PORT}:5432"
+    environment:
+      POSTGRES_DB: user_db
+      POSTGRES_USER: karthik
+      POSTGRES_PASSWORD: password
+    volumes:
+      - user_db_data:/var/lib/postgresql/data
+
+  postgres-productservice:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: product_db_container
+    ports:
+      - "${PRODUCT_DB_PORT}:5432"
+    environment:
+      POSTGRES_DB: product_db
+      POSTGRES_USER: karthik
+      POSTGRES_PASSWORD: password
+    volumes:
+      - product_db_data:/var/lib/postgresql/data
+
+  postgres-orderservice:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: order_db_container
+    ports:
+      - "${ORDER_DB_PORT}:5432"
+    environment:
+      POSTGRES_DB: order_db
+      POSTGRES_USER: karthik
+      POSTGRES_PASSWORD: password
+    volumes:
+      - order_db_data:/var/lib/postgresql/data
+
+volumes:
+  user_db_data:
+  product_db_data:
+  order_db_data:
