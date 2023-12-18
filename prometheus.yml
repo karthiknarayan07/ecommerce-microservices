@@ -3,9 +3,35 @@ global:
   evaluation_interval: 15s
 
 scrape_configs:
-  - job_name: 'django_microservice_1'
+
+  - job_name: 'userservice_1'
     static_configs:
       - targets: ['20.40.54.159:8000']
-  - job_name: 'django_microservice_2'
+
+  - job_name: 'userservice_2'
     static_configs:
       - targets: ['20.40.54.159:8001']
+
+  - job_name: 'productservice_1'
+    static_configs:
+      - targets: ['20.40.54.159:8002']
+
+  - job_name: 'productservice_2'
+    static_configs:
+      - targets: ['20.40.54.159:8003']
+
+  - job_name: 'orderervice_1'
+    static_configs:
+      - targets: ['20.40.54.159:8004']
+
+  - job_name: 'orderervice_2'
+    static_configs:
+      - targets: ['20.40.54.159:8005']
+
+  - job_name: 'communicationservice_1'
+    static_configs:
+      - targets: ['20.40.54.159:8006']
+
+  - job_name: 'communicationservice_2'
+    static_configs:
+      - targets: ['20.40.54.159:8007']

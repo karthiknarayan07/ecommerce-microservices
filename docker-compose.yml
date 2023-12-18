@@ -27,6 +27,48 @@ services:
     ports:
       - "${USERSERVICE_CONTAINER_PORT_2}:8000"
 
+  productservice_container_1:
+    build:
+      context: ./productservice
+      dockerfile: Dockerfile
+    ports:
+      - "${PRODUCTSERVICE_CONTAINER_PORT_1}:8000"
+
+  productservice_container_2:
+    build:
+      context: ./productservice
+      dockerfile: Dockerfile
+    ports:
+      - "${PRODUCTSERVICE_CONTAINER_PORT_2}:8000"
+
+  orderservice_container_1:
+    build:
+      context: ./orderservice
+      dockerfile: Dockerfile
+    ports:
+      - "${ORDERSERVICE_CONTAINER_PORT_1}:8000"
+  
+  orderservice_container_2:
+    build:
+      context: ./orderservice
+      dockerfile: Dockerfile
+    ports:
+      - "${ORDERSERVICE_CONTAINER_PORT_2}:8000"
+  
+  communicationservice_container_1:
+    build:
+      context: ./communicationservice
+      dockerfile: Dockerfile
+    ports:
+      - "${COMMUNICATIONSERVICE_CONTAINER_PORT_1}:8000"
+
+  communicationservice_container_2:
+    build:
+      context: ./communicationservice
+      dockerfile: Dockerfile
+    ports:
+      - "${COMMUNICATIONSERVICE_CONTAINER_PORT_2}:8000"
+
   redis:
     build:
       context: ./redis
