@@ -10,16 +10,16 @@ def main():
     environment = os.getenv("DJANGO_SETTINGS_ENVIRONMENT")
     if environment == "development":
         print("Loading development settings file for Django configurations")
-        os.environ["DJANGO_SETTINGS_MODULE"] = "communicationservice.settings.dev"
+        os.environ["DJANGO_SETTINGS_MODULE"] = "orderservice.settings.dev"
     elif environment == "stage":
         print("Loading stage settings file for Django configurations")
-        os.environ["DJANGO_SETTINGS_MODULE"] = "communicationservice.settings.stage"
+        os.environ["DJANGO_SETTINGS_MODULE"] = "orderservice.settings.stage"
     elif environment == "production":
         print("Loading production settings file for Django configurations")
-        os.environ["DJANGO_SETTINGS_MODULE"] = "communicationservice.settings.prod"
+        os.environ["DJANGO_SETTINGS_MODULE"] = "orderservice.settings.prod"
     else:
         print("Loading local settings file for Django configurations")
-        os.environ["DJANGO_SETTINGS_MODULE"] = "communicationservice.settings.local"
+        os.environ["DJANGO_SETTINGS_MODULE"] = "orderservice.settings.local"
 
     try:
         from django.core.management import execute_from_command_line

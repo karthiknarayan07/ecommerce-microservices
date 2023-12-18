@@ -41,7 +41,7 @@ MIDDLEWARE = [
     'django_prometheus.middleware.PrometheusAfterMiddleware',
 ]
 
-ROOT_URLCONF = 'communicationservice.urls'
+ROOT_URLCONF = 'productservice.urls'
 
 TEMPLATES = [
     {
@@ -59,7 +59,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'communicationservice.wsgi.application'
+WSGI_APPLICATION = 'productservice.wsgi.application'
 
 
 # Database
@@ -136,6 +136,7 @@ CACHES = {
         'TIMEOUT': 8040
     }
 }
+
 
 
 # jwt secrets
