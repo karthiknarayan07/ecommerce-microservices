@@ -79,6 +79,7 @@ class LoginView(APIView):
                     'refresh_token':str(refresh_token),
                     'access_token':str(access_token)
                 }
+                
                 # save refresh token in user tokens table
                 return CustomResponse().successResponse(data=data)
             
@@ -120,7 +121,7 @@ class RegisterView(APIView):
                     'user_id': user.pk,
                     'mobile': mobile,
                 }
-                rabbitconnection(message=password, queue='user_queue')
+                rabbitconnection(message=payload, queue='user_queue')
                 # save refresh token in user tokens table
                 return CustomResponse().successResponse(data=data)
             

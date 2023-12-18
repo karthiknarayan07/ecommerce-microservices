@@ -2,12 +2,12 @@ import pika
 from django.conf import settings
 import json
 
-def user_queue_receiver():
+def communication_queue_receiver():
     credentials = pika.PlainCredentials(settings.RABBIT_USERNAME, settings.RABBIT_PASSWORD)
     connection = pika.BlockingConnection(pika.ConnectionParameters(host=settings.RABBIT_HOST,port=settings.RABBIT_PORT, credentials=credentials))
     channel = connection.channel()
 
-    channel.queue_declare(queue='user_queue', durable=True)
+    channel.queue_declare(queue='communication_queue', durable=True)
     print("*************************************")
     print("*************************************")
     print(' [*] Waiting for messages. To exit press CTRL+C')
@@ -33,7 +33,7 @@ def user_queue_receiver():
         except Exception as e:
             print("Exception occurred in Rabbit MQ ")
     channel.basic_qos(prefetch_count=1)
-    channel.basic_consume(queue='user_queue', on_message_callback=callback)
+    channel.basic_consume(queue='communication_queue', on_message_callback=callback)
     channel.start_consuming()
 
 
