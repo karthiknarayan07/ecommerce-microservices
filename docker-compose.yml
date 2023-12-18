@@ -35,8 +35,8 @@ services:
       - "${REDIS_PORT}:6379"
     environment:
       - REDIS_PASSWORD=pesto
-    volumes:
-      - ./redis_data:/data
+    # volumes:
+    #   - ./redis_data:/data
 
   rabbitmq:
     build:
