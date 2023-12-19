@@ -1,15 +1,16 @@
 from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework.permissions import AllowAny,IsAuthenticated
+from rest_framework.permissions import AllowAny
 
-from .models import *
-from .serializers import *
+from api.models import *
+from api.serializers import *
 
-from conf.rabbit_sender import RabbitSingleton
-from .permissions import custom_method_permissions
+from api.permissions import custom_method_permissions
 
 from django.db import transaction
+from django.db import transaction, IntegrityError
+
 from django.core.cache import cache
 
 
@@ -46,32 +47,21 @@ class ProductsView(APIView):
         try:
             # get data from GET query params
             product_id = request.GET.get('product_id',None)
-            
             # if product_id is present then get data from db
             if product_id:
-                # first check in redis cache
-                product_data = cache.get('products_'+str(product_id))
-                
-                if product_data:
-                    return CustomResponse().successResponse(data=product_data)
-                
-                # if not present in redis cache then get from db
-                product_obj = Products.objects.filter(product_id=product_id).first()
-                
+                # get from db
+                product_obj = Products.objects.filter(id=product_id).first()
                 if product_obj:
                     serializer = ProductsSerializer(product_obj)
                     
-                    # now will save in redis cache for faster access later in GET api
-                    cache.set('products_'+str(product_id), serializer.data, timeout=700*60)
+                    # save in redis cache for faster access later in GET api
+                    cache.set('products_'+str(product_obj.pk), serializer.data, timeout=700*60)
                     
                     return CustomResponse().successResponse(data=serializer.data)
-                
+                # no record with id
                 return CustomResponse().errorResponse(description="Product not found")
-            
-            # if product_id is not present then get all products data from db
-            products_obj = Products.objects.all()
-            serializer = ProductsSerializer(products_obj, many=True)
-            return CustomResponse().successResponse(data=serializer.data)
+            # give product id in query params
+            return CustomResponse().errorResponse(description="please enter product id")
         except Exception as error:
             return CustomResponse().errorResponse(description=str(error))
     
@@ -89,8 +79,9 @@ class ProductsView(APIView):
             if serializer.is_valid():
                 prod_obj = serializer.save() # save to db
                 
-                # now will save in redis cache for faster access later in GET api
-                cache.set('products_'+str(prod_obj.pk), serializer.data, timeout=700*60)
+                # invalidate redis cache
+                cache.delete('products_'+str(prod_obj.pk))
+                cache.delete('products')
                 
                 # return saved product details to FE
                 return CustomResponse().successResponse(data=serializer.data)
@@ -110,20 +101,56 @@ class ProductsView(APIView):
             # get data from POST body
             data = request.data
             
-            # existing product object
-            product_obj = Products.objects.filter(product_id=data['product_id']).first()
+            # applying pessimistic lock so that no other user can update same record at same time else it will throw integrity error
+            product_obj = Products.objects.select_for_update().filter(id=data['product_id']).first()
             
             if product_obj:
                 # validating new data, allowing partial update
                 serializer = ProductsSerializer(product_obj, data=data, partial=True, context={'request': request})
                 if serializer.is_valid():
-                    serializer.save()
+                    product_obj = serializer.save()
+                    
+                    # invalidate redis cache
+                    cache.delete('products_'+str(product_obj.pk))
+                    cache.delete('products')
+                    
                     return CustomResponse().successResponse(data=serializer.data)
                 return CustomResponse().errorResponse(data=serializer.errors)
-            
-            # if each error needs to be handled separately then we can, write different conditions in try except blocks
-            # of serializer.errors and return different error messages with error codes
-            return CustomResponse().errorResponse(serializer.errors)
+            return CustomResponse().errorResponse(description="Product not found.")
+
+        except IntegrityError:
+            transaction.set_rollback(True)
+            return CustomResponse().errorResponse(description="Concurrent update conflict. Try again.")
+
         except Exception as error:
             transaction.set_rollback(True)
+            return CustomResponse().errorResponse(description=str(error))
+        
+        
+        
+class ReadProductsView(APIView):
+    permission_classes = (AllowAny,)
+    
+    def get(self,request):
+        try:
+            # pagination and query params not implemented due to time constraint 
+            
+            # first check in redis cache - cache hit
+            product_data = cache.get('products')
+            if product_data:
+                return CustomResponse().successResponse(data=product_data)
+            
+            # if not present in redis cache then get from db - cache miss
+            products = Products.objects.filter()
+            
+            if products:
+                serializer = ProductsSerializer(products,many=True)
+                
+                # now will save in redis cache for faster access later in GET api
+                cache.set('products', serializer.data, timeout=700*60)
+                
+                return CustomResponse().successResponse(data=serializer.data)
+            
+            return CustomResponse().errorResponse(description="Products not found")
+        except Exception as error:
             return CustomResponse().errorResponse(description=str(error))

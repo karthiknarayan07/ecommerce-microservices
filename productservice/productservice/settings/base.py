@@ -140,3 +140,4 @@ EMAIL_HOST_USER = 'kpothurajula@gmail.com'
 EMAIL_HOST_PASSWORD = 'bzlqmcskofqkruyf'
 
 AUTH_SERVICE_URL = 'http://20.40.54.159/userservice/internal/user'
+ORDER_SERVICE_URL = 'http://20.40.54.159/orderservice/internal/orders'

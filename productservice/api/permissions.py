@@ -46,6 +46,9 @@ def custom_method_permissions(required_permissions):
                     permissions = data.get('permissions',[])
                     role = data.get('role',None)
                     
+                    # attach user data to request object
+                    request.user_data = data
+                    
                     # checking permsissions from auth service
                     if not all(permission in permissions for permission in required_permissions):
                         return CustomResponse().errorResponse(description="You dont have permission for this operation", errorCode=1,)
