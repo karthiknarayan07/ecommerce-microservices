@@ -33,7 +33,7 @@ def communication_queue_receiver():
             # acknowledge the message to delete from queue
             ch.basic_ack(delivery_tag=method.delivery_tag)
         except Exception as e:
-            print("Exception occurred in Rabbit MQ ")
+            print("Exception occurred in Rabbit MQ:- "+str(e))
     channel.basic_qos(prefetch_count=1)
     channel.basic_consume(queue='communication_queue', on_message_callback=callback)
     channel.start_consuming()
