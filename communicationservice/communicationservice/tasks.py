@@ -16,3 +16,17 @@ def SendSignUpMail(payload):
         
     except Exception as e:
         print("Exception occurred in sending mail:- "+str(e))
+        
+        
+
+def SendOrderConfirmationMail(payload):
+    print("+++++++++++++++++++Sending mail to user++++++++++++++++++++++++")
+    try:
+        send_mail(
+                "Order Confirmation Karthik E-commerce",
+                f"Your order of {payload['product']['name']} has been confirmed and will be delivered in 3-4 business days",
+                settings.EMAIL_HOST_USER,
+                [payload["email"],],
+        )
+    except Exception as e:
+        print("Exception occurred in sending mail:- "+str(e))

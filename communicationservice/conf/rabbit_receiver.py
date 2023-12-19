@@ -27,6 +27,8 @@ def communication_queue_receiver():
             # case statements for different identifiers
             if data["identifier"] == '1':
                 SendSignUpMail(data)
+            elif data["identifier"] == '2':
+                SendOrderConfirmationMail(data)
             else:
                 print("invalid identifier")
             

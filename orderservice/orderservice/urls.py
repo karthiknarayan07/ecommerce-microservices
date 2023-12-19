@@ -7,6 +7,10 @@ receiver_thread = threading.Thread(target=order_queue_receiver, daemon=True)
 receiver_thread.start()
 
 urlpatterns = [
+    
+    # order service api urls
+    path('orderservice/', include('api.urls')),
+    
     # monitoring
     path('', include('django_prometheus.urls')),
 ]
