@@ -42,6 +42,39 @@ class CustomResponse():
 class ProductsView(APIView):
     permission_classes = (AllowAny,)
     
+    def get(self,request):
+        try:
+            # get data from GET query params
+            product_id = request.GET.get('product_id',None)
+            
+            # if product_id is present then get data from db
+            if product_id:
+                # first check in redis cache
+                product_data = cache.get('products_'+str(product_id))
+                
+                if product_data:
+                    return CustomResponse().successResponse(data=product_data)
+                
+                # if not present in redis cache then get from db
+                product_obj = Products.objects.filter(product_id=product_id).first()
+                
+                if product_obj:
+                    serializer = ProductsSerializer(product_obj)
+                    
+                    # now will save in redis cache for faster access later in GET api
+                    cache.set('products_'+str(product_id), serializer.data, timeout=700*60)
+                    
+                    return CustomResponse().successResponse(data=serializer.data)
+                
+                return CustomResponse().errorResponse(description="Product not found")
+            
+            # if product_id is not present then get all products data from db
+            products_obj = Products.objects.all()
+            serializer = ProductsSerializer(products_obj, many=True)
+            return CustomResponse().successResponse(data=serializer.data)
+        except Exception as error:
+            return CustomResponse().errorResponse(description=str(error))
+    
     @custom_method_permissions(['is_superadmin'])
     @transaction.atomic
     def post(self, request):
@@ -57,12 +90,12 @@ class ProductsView(APIView):
                 prod_obj = serializer.save() # save to db
                 
                 # now will save in redis cache for faster access later in GET api
-                cache.set('products_'+str(prod_obj.pk), serializer.data)
+                cache.set('products_'+str(prod_obj.pk), serializer.data, timeout=700*60)
                 
                 # return saved product details to FE
                 return CustomResponse().successResponse(data=serializer.data)
             
-            # if each error needs to be handled separately then we can, write different conditions in try except blocks
+            # if errors should handled individually and separately then we can, write different conditions in try except blocks
             # of serializer.errors and return different error messages with error codes
             return CustomResponse().errorResponse(serializer.errors)
         except Exception as error:

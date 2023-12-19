@@ -45,12 +45,12 @@ def custom_method_permissions(required_permissions):
                     data = response.json().get('info',{})
                     permissions = data.get('permissions',[])
                     role = data.get('role',None)
-                    print(data)
+                    
                     # checking permsissions from auth service
                     if not all(permission in permissions for permission in required_permissions):
                         return CustomResponse().errorResponse(description="You dont have permission for this operation", errorCode=1,)
             except Exception as e:
-                return CustomResponse().errorResponse(description=f"Error while checking permissions:- {str(e)}", errorCode=1,)
+                return CustomResponse().errorResponse(description=f"Error while checking permissions for auth service:- {str(e)}", errorCode=1,)
             
             # if all permissions are there, then call the view method
             return view_method(self, request, *args, **kwargs)
