@@ -3,9 +3,7 @@ from rest_framework.exceptions import AuthenticationFailed
 from conf.jwt_auth import DecodeAccessToken
 from api.models import UserMaster
 
-from conf.redis_conn import GetModelObject,SetModelObject
-
-
+from django.core.cache import cache
 
 class CustomJWTAuthentication(BaseAuthentication):
     def authenticate(self, request):
@@ -20,9 +18,12 @@ class CustomJWTAuthentication(BaseAuthentication):
             raise AuthenticationFailed('Authentication failed. Token is either invalid or expired.', code='token_invalid_or_expired')
 
         user_id = payload.get('user_id')
-        user = GetModelObject(f'user_{user_id}')
+        # user = GetModelObject(f'user_{user_id}')
+        user = None
+        user = cache.get(f'user_{user_id}')
 
         if user is None:
+            print("cache miss ********************************")
             try:
                 user = UserMaster.objects.get(pk=user_id)
                 if not user.is_active:
@@ -30,7 +31,8 @@ class CustomJWTAuthentication(BaseAuthentication):
             except UserMaster.DoesNotExist:
                 raise AuthenticationFailed('User not found', code='user_not_found')
 
-            # Caching the user for 12 hours (720 minutes)
-            SetModelObject(f'user_{user_id}', user, ttl=720 * 60)
+            # # Caching the user for 12 hours (720 minutes)
+            # SetModelObject(f'user_{user_id}', user, ttl=720 * 60)
+            cache.set(f'user_{user_id}', user, timeout=720 * 60)
 
         return user, None

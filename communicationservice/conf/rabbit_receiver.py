@@ -2,6 +2,8 @@ import pika
 from django.conf import settings
 import json
 
+from communicationservice.tasks import *
+
 def communication_queue_receiver():
     credentials = pika.PlainCredentials(settings.RABBIT_USERNAME, settings.RABBIT_PASSWORD)
     connection = pika.BlockingConnection(pika.ConnectionParameters(host=settings.RABBIT_HOST,port=settings.RABBIT_PORT, credentials=credentials))
@@ -24,7 +26,7 @@ def communication_queue_receiver():
             
             # case statements for different identifiers
             if data["identifier"] == '1':
-                pass
+                SendSignUpMail(data)
             else:
                 print("invalid identifier")
             

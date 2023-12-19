@@ -204,8 +204,6 @@ class ProfileView(APIView):
     def get(self,request):
         try:
             # get user from request object - cache first and then db - implemenented redis cache
-            print(request.headers)
-            print("i am profile api")
             user = request.user
             if user:
                 data = {
