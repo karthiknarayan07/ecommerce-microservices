@@ -8,10 +8,8 @@ from api.serializers import *
 
 
 from django.db import transaction
-from django.db import transaction, IntegrityError
+from django.db import transaction
 from django.conf import settings
-
-from django.core.cache import cache
 
 from api.permissions import custom_method_permissions
 
@@ -66,15 +64,19 @@ class OrdersView(APIView):
                 # serialize to send to orderservice API
                 product_serializer = ProductsSerializer(product_obj)
                 
-                # create order by calling orderservice API
                 if quantity > 0:
+                    # decrese the stock quantity
+                    product_obj.stock_quantity = product_obj.stock_quantity - quantity
+                    product_obj.save()
+                    
+                    # create order by calling orderservice API
                     response = self.CreateOrder(request,product_serializer.data,quantity)
                     
                     if response.status_code == 200 and response.json().get('success',False):
                         data = response.json().get('info',{})
                         resp = {
                             'status':'order created successfully',
-                            'order_id': data.get('order_id',None),
+                            'order_id': data.get('id',None),
                             'product_name': product_obj.name,
                             'product_price': product_obj.price,
                             'quantity': quantity,
