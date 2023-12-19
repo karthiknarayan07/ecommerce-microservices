@@ -9,6 +9,7 @@ from django.contrib.auth.hashers import make_password, check_password
 from conf.jwt_auth import GenerateAccessToken,GenerateRefreshToken
 
 from conf.rabbit_sender import RabbitSingleton
+from django.db import transaction
 
 
 
@@ -57,6 +58,7 @@ class TestView(APIView):
 class RegisterView(APIView):
     permission_classes = (AllowAny,)
     
+    @transaction.atomic
     def post(self,request):
         try:
             # get details from request object
@@ -105,6 +107,7 @@ class RegisterView(APIView):
             
             # include more cases to handle errors like duplicate mobile number, email etc
         except Exception as error:
+            transaction.set_rollback(True)
             return CustomResponse().errorResponse(data=str(error))
         
         
@@ -112,6 +115,7 @@ class RegisterView(APIView):
 class SuperAdminRegisterView(APIView):
     permission_classes = (AllowAny,)
     
+    @transaction.atomic
     def post(self,request):
         try:
             # get details from request object
@@ -161,6 +165,7 @@ class SuperAdminRegisterView(APIView):
             
             # include more cases to handle errors like duplicate mobile number, email etc
         except Exception as error:
+            transaction.set_rollback(True)
             return CustomResponse().errorResponse(data=str(error))
         
         
