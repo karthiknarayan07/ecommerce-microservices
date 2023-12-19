@@ -65,9 +65,6 @@ class OrdersView(APIView):
                 product_serializer = ProductsSerializer(product_obj)
                 
                 if quantity > 0:
-                    # decrese the stock quantity
-                    product_obj.stock_quantity = product_obj.stock_quantity - quantity
-                    product_obj.save()
                     
                     # invalidate cache
                     cache.delete('products_'+str(product_obj.pk))
@@ -85,6 +82,9 @@ class OrdersView(APIView):
                             'product_price': product_obj.price,
                             'quantity': quantity,
                         }
+                        # decrese the stock quantity
+                        product_obj.stock_quantity = product_obj.stock_quantity - quantity
+                        product_obj.save()
                         return CustomResponse().successResponse(data=resp)
                     
                     # api designed to return 200 even if order is not created if not 200 then return error
