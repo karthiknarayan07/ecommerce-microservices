@@ -8,7 +8,7 @@ from api.serializers import *
 
 
 from django.db import transaction
-from django.db import transaction
+from django.core.cache import cache
 from django.conf import settings
 
 from api.permissions import custom_method_permissions
@@ -68,6 +68,10 @@ class OrdersView(APIView):
                     # decrese the stock quantity
                     product_obj.stock_quantity = product_obj.stock_quantity - quantity
                     product_obj.save()
+                    
+                    # invalidate cache
+                    cache.delete('products_'+str(product_obj.pk))
+                    cache.delete('products')
                     
                     # create order by calling orderservice API
                     response = self.CreateOrder(request,product_serializer.data,quantity)
