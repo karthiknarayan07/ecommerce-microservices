@@ -106,5 +106,5 @@ class OrdersView(APIView):
     def CreateOrder(self,request,product,quantity):
         headers = {'Authorization': request.headers.get('Authorization',None), 'Content-Type': 'application/json'}
         payload = {'product': product, 'quantity': quantity, 'user_data': request.user_data}
-        response = requests.post(settings.ORDER_SERVICE_URL+'orders', headers=headers, data=json.dumps(payload))
+        response = requests.post(settings.ORDER_SERVICE_URL+'internal/orders', headers=headers, data=json.dumps(payload))
         return response
