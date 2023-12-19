@@ -22,7 +22,7 @@ def product_queue_receiver():
             data = json.loads(body)
             print(" [x] Received %r" % data)
             
-            # case statements for different identifiers
+            # case statements for different identifiers for diiferent functionalities
             if data["identifier"] == '1':
                 pass
             else:

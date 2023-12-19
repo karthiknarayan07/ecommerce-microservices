@@ -14,21 +14,21 @@ class CustomJWTAuthentication(BaseAuthentication):
 
         token = authorization_header.split(' ')[1]
         payload = DecodeAccessToken(token)
-        if not payload:
-            return None
+        if payload is None:
+            raise AuthenticationFailed('Authentication failed. Token is either invalid or expired.', code='token_invalid_or_expired')
 
         user_id = payload.get('user_id')
         user = cache.get(f'user_{user_id}')
 
         if user is None:
             try:
-                user = UserMaster.objects.select_related('branch').get(pk=user_id)
+                user = UserMaster.objects.get(pk=user_id)
                 if not user.is_active:
                     raise AuthenticationFailed('User is not active', code='user_inactive')
             except UserMaster.DoesNotExist:
                 raise AuthenticationFailed('User not found', code='user_not_found')
 
-            # Cache the user
-            cache.set(f'user_{user_id}', user)
+            # Caching the user for 12 hours (720 minutes)
+            cache.set(f'user_{user_id}', user, timeout=720 * 60)
 
         return user, None

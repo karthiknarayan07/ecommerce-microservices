@@ -5,10 +5,13 @@ from django.conf import settings
 def GenerateAccessToken(user):
     payload = {
         'user_id': user.id,
+        'email': user.email,
+        'mobile': user.mobile,
+        'full_name': user.full_name,
         'exp': datetime.utcnow() + timedelta(days=30),
         'iat': datetime.utcnow(),
     }
-    token = jwt.encode(payload, settings.SECRET_KEY, algorithm='HS256')
+    token = jwt.encode(payload, settings.ACCESS_SECRET_KEY, algorithm='HS256')
     return token
 
 def GenerateRefreshToken(user):
@@ -23,7 +26,7 @@ def GenerateRefreshToken(user):
 
 def DecodeAccessToken(token):
     try:
-        payload = jwt.decode(token, settings.SECRET_KEY, algorithms=['HS256'])
+        payload = jwt.decode(token, settings.ACCESS_SECRET_KEY, algorithms=['HS256'])
         return payload
     except jwt.ExpiredSignatureError:
         return None

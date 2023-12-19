@@ -45,7 +45,9 @@ class UserMaster(AbstractBaseUser):
     )
     
     mobile = models.BigIntegerField(unique=True, null=False, blank=False, validators=[MinValueValidator(1000000000), MaxValueValidator(9999999999)])
-    password = models.CharField(max_length=100, default='')
+    email = models.EmailField(max_length=100, unique=True, null=False, blank=False)
+    full_name = models.CharField(max_length=100, null=False, blank=False)
+    password = models.CharField(max_length=100, null=False, blank=False)
     
     role = models.CharField(max_length=50, choices=ROLE_CHOICES, default='ENDUSER',blank=False,null=False)
     is_active = models.BooleanField(default=True)

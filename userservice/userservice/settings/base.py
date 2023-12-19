@@ -118,18 +118,6 @@ CORS_ALLOW_HEADERS = list(default_headers)
 PROMETHEUS_METRIC_EXPORT_MIGRATIONS = True
 PROMETHEUS_METRIC_EXPORT_URL = "/metrics/"
 
-# redis cache
-CACHES = {
-    'default': {
-        'BACKEND': 'django_redis.cache.RedisCache',
-        'LOCATION': 'redis://20.40.54.159:8020/0',
-        'OPTIONS': {
-            'CLIENT_CLASS': 'django_redis.client.DefaultClient',
-        },
-        'TIMEOUT': 8040
-    }
-}
-
 # REST framework settings
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': (
@@ -142,3 +130,4 @@ REST_FRAMEWORK = {
 
 # jwt secrets
 REFRESH_SECRET_KEY='secret'
+ACCESS_SECRET_KEY='secret'

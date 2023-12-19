@@ -3,19 +3,32 @@ import json
 from django.conf import settings
 from django.core.serializers.json import DjangoJSONEncoder
 
+# using singleton pattern to create a single connection object results in better performance in case of multiple requests (concurrent)) 
+# and also prevents the creation of multiple connections to the rabbitmq server
 
-def rabbitconnection(message, queue):
-    credentials = pika.PlainCredentials(settings.RABBIT_USERNAME, settings.RABBIT_PASSWORD)
-    connection = pika.BlockingConnection(pika.ConnectionParameters(host=settings.RABBIT_HOST,port=settings.RABBIT_PORT, credentials=credentials))
-    channel = connection.channel()
+class RabbitSingleton:
+    _instance = None
 
-    channel.queue_declare(queue=queue, durable=True)
+    def __new__(cls):
+        if not cls._instance:
+            cls._instance = super(RabbitSingleton, cls).__new__(cls)
+            cls._instance.connection = None
+        return cls._instance
 
-    channel.basic_publish(
-        exchange='',
-        routing_key=queue,
-        body=json.dumps(message, cls=DjangoJSONEncoder),
-        properties=pika.BasicProperties(
-            delivery_mode=2,
-        ))
-    connection.close()
+    def __init__(self):
+        if not self.connection:
+            credentials = pika.PlainCredentials(settings.RABBIT_USERNAME, settings.RABBIT_PASSWORD)
+            self.connection = pika.BlockingConnection(pika.ConnectionParameters(
+                host=settings.RABBIT_HOST, port=settings.RABBIT_PORT, credentials=credentials))
+            self.channel = self.connection.channel()
+
+    def send_message(self, message, queue):
+        self.channel.queue_declare(queue=queue, durable=True)
+        self.channel.basic_publish(
+            exchange='',
+            routing_key=queue,
+            body=json.dumps(message, cls=DjangoJSONEncoder),
+            properties=pika.BasicProperties(
+                delivery_mode=2,
+            )
+        )
