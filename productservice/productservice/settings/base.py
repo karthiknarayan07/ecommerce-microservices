@@ -24,6 +24,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     
+    'api.apps.ApiConfig',
+    
     'corsheaders',
     'rest_framework',
     'django_prometheus'
@@ -125,6 +127,7 @@ CORS_ALLOW_HEADERS = list(default_headers)
 PROMETHEUS_METRIC_EXPORT_MIGRATIONS = True
 PROMETHEUS_METRIC_EXPORT_URL = "/metrics/"
 
+
 # jwt secrets
 REFRESH_SECRET_KEY='secret'
 ACCESS_SECRET_KEY='secret'
@@ -135,3 +138,5 @@ EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_HOST_USER = 'kpothurajula@gmail.com'
 EMAIL_HOST_PASSWORD = 'bzlqmcskofqkruyf'
+
+AUTH_SERVICE_URL = 'http://20.40.54.159/userservice/internal/user'

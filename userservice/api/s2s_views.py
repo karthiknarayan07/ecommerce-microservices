@@ -46,6 +46,8 @@ class UserView(APIView):
                     'mobile':user.mobile,
                     'email':user.email,
                     'full_name':user.full_name,
+                    'permissions':user.custom_permissions,
+                    'role':user.role,
                 }
                 return CustomResponse().successResponse(data=data)
             return CustomResponse().errorResponse(description="user not found - clear token in FE and logout")

@@ -7,6 +7,9 @@ receiver_thread = threading.Thread(target=product_queue_receiver, daemon=True)
 receiver_thread.start()
 
 urlpatterns = [
+    
+    path('productservice/', include('api.urls')),
+    
     # monitoring
     path('', include('django_prometheus.urls')),
 ]
