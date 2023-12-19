@@ -1,9 +1,11 @@
 from rest_framework.authentication import BaseAuthentication
 from rest_framework.exceptions import AuthenticationFailed
-from django.core.cache import cache
 from conf.jwt_auth import DecodeAccessToken
 from api.models import UserMaster
-from rest_framework import status
+
+from conf.redis_conn import GetModelObject,SetModelObject
+
+
 
 class CustomJWTAuthentication(BaseAuthentication):
     def authenticate(self, request):
@@ -18,7 +20,7 @@ class CustomJWTAuthentication(BaseAuthentication):
             raise AuthenticationFailed('Authentication failed. Token is either invalid or expired.', code='token_invalid_or_expired')
 
         user_id = payload.get('user_id')
-        user = cache.get(f'user_{user_id}')
+        user = GetModelObject(f'user_{user_id}')
 
         if user is None:
             try:
@@ -29,6 +31,6 @@ class CustomJWTAuthentication(BaseAuthentication):
                 raise AuthenticationFailed('User not found', code='user_not_found')
 
             # Caching the user for 12 hours (720 minutes)
-            cache.set(f'user_{user_id}', user, timeout=720 * 60)
+            SetModelObject(f'user_{user_id}', user, ttl=720 * 60)
 
         return user, None

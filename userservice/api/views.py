@@ -10,8 +10,6 @@ from conf.jwt_auth import GenerateAccessToken,GenerateRefreshToken
 
 from conf.rabbit_sender import RabbitSingleton
 
-from django.views.decorators.cache import never_cache
-
 
 
 

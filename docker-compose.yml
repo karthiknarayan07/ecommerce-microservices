@@ -76,7 +76,7 @@ services:
     ports:
       - "${REDIS_PORT}:6379"
     environment:
-      - REDIS_PASSWORD=pesto
+      - REDIS_PASSWORD=password
     # volumes:
     #   - ./redis_data:/data
 

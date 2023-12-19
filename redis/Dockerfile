@@ -4,7 +4,7 @@ WORKDIR /data
 
 EXPOSE 6379
 
-ENV REDIS_PASSWORD pesto
+ENV REDIS_PASSWORD password
 
 # VOLUME /data
 
