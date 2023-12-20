@@ -1,4 +1,3 @@
-
 ## Tech Stack
 
 **Backend:** Python, Django, DRF
@@ -8,9 +7,8 @@
 **Database:** PostgreSQL
 
 **Others:** Redis, RabbitMQ, Prometheus, NGINX
+
 ## Deployment
-
-
 
 Clone the project
 
@@ -23,7 +21,9 @@ Go to the project directory
 ```bash
   cd ecommerce-microservices
 ```
+
 Go to databases folder
+
 ```bash
   cd databases
 ```
@@ -41,6 +41,7 @@ Start all databases
 ```
 
 Go to parent folder to build services
+
 ```bash
   cd ..
 ```
@@ -82,7 +83,7 @@ To run this project, you will need to add the following environment variables to
 
 `COMMUNICATIONSERVICE_CONTAINER_PORT_1`
 `COMMUNICATIONSERVICE_CONTAINER_PORT_2`
+
 ## Authors
 
 - [@Karthik Narayan](https://www.github.com/karthiknarayan07)
-

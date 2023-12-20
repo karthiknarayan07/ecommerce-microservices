@@ -1,0 +1,406 @@
+{
+	"info": {
+		"_postman_id": "c79a41d6-3fe9-4579-9fd6-be8cd8ae6d41",
+		"name": "ecommerce-microservices",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "28696093",
+		"_collection_link": "https://tripzo.postman.co/workspace/tripzo-backend~8376d09e-ae8f-47b0-be30-4d36f01ca5a4/collection/28696093-c79a41d6-3fe9-4579-9fd6-be8cd8ae6d41?action=share&source=collection_link&creator=28696093"
+	},
+	"item": [
+		{
+			"name": "register superadmin",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "full_name",
+							"value": "karthik narayan",
+							"type": "text"
+						},
+						{
+							"key": "mobile",
+							"value": "8096675401",
+							"type": "text"
+						},
+						{
+							"key": "email",
+							"value": "developer@karthiknarayan.in",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "password",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{ECOMMERCE}}userservice/register/superadmin",
+					"host": [
+						"{{ECOMMERCE}}userservice"
+					],
+					"path": [
+						"register",
+						"superadmin"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "register enduser",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "full_name",
+							"value": "swaminathan",
+							"type": "text"
+						},
+						{
+							"key": "mobile",
+							"value": "8096675409",
+							"type": "text"
+						},
+						{
+							"key": "email",
+							"value": "kpothurajula@gmail.com",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "password",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{ECOMMERCE}}userservice/register",
+					"host": [
+						"{{ECOMMERCE}}userservice"
+					],
+					"path": [
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "login",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "mobile",
+							"value": "8096675402",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "password",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{ECOMMERCE}}userservice/login",
+					"host": [
+						"{{ECOMMERCE}}userservice"
+					],
+					"path": [
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "profile",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoyNywiZW1haWwiOiJkZXZlbG9wZXJAa2FydGhpa25hcmF5YW4uaW4iLCJtb2JpbGUiOiI4MDk2Njc1NDAxIiwiZnVsbF9uYW1lIjoia2FydGhpayBuYXJheWFuIiwiZXhwIjoxNzA1NTc1NDQzLCJpYXQiOjE3MDI5ODM0NDN9.ReAKZzb31rzW1xIc-UQY1vuQvdZVuJoN5oJhQEygGvs",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{ECOMMERCE}}userservice/profile",
+					"host": [
+						"{{ECOMMERCE}}userservice"
+					],
+					"path": [
+						"profile"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "view all products",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoyNywiZW1haWwiOiJkZXZlbG9wZXJAa2FydGhpa25hcmF5YW4uaW4iLCJtb2JpbGUiOiI4MDk2Njc1NDAxIiwiZnVsbF9uYW1lIjoia2FydGhpayBuYXJheWFuIiwiZXhwIjoxNzA1NTc1NDQzLCJpYXQiOjE3MDI5ODM0NDN9.ReAKZzb31rzW1xIc-UQY1vuQvdZVuJoN5oJhQEygGvs",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{ECOMMERCE}}productservice/products/view",
+					"host": [
+						"{{ECOMMERCE}}productservice"
+					],
+					"path": [
+						"products",
+						"view"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "view product by id",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoyNywiZW1haWwiOiJkZXZlbG9wZXJAa2FydGhpa25hcmF5YW4uaW4iLCJtb2JpbGUiOiI4MDk2Njc1NDAxIiwiZnVsbF9uYW1lIjoia2FydGhpayBuYXJheWFuIiwiZXhwIjoxNzA1NTc1NDQzLCJpYXQiOjE3MDI5ODM0NDN9.ReAKZzb31rzW1xIc-UQY1vuQvdZVuJoN5oJhQEygGvs",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{ECOMMERCE}}productservice/products?product_id=1",
+					"host": [
+						"{{ECOMMERCE}}productservice"
+					],
+					"path": [
+						"products"
+					],
+					"query": [
+						{
+							"key": "product_id",
+							"value": "1"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "add product",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoyNywiZW1haWwiOiJkZXZlbG9wZXJAa2FydGhpa25hcmF5YW4uaW4iLCJtb2JpbGUiOiI4MDk2Njc1NDAxIiwiZnVsbF9uYW1lIjoia2FydGhpayBuYXJheWFuIiwiZXhwIjoxNzA1NTc1NDQzLCJpYXQiOjE3MDI5ODM0NDN9.ReAKZzb31rzW1xIc-UQY1vuQvdZVuJoN5oJhQEygGvs",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "name",
+							"value": "tshirt",
+							"type": "text"
+						},
+						{
+							"key": "description",
+							"value": "good tshirt",
+							"type": "text"
+						},
+						{
+							"key": "price",
+							"value": "2500",
+							"type": "text"
+						},
+						{
+							"key": "stock_quantity",
+							"value": "5",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{ECOMMERCE}}productservice/products",
+					"host": [
+						"{{ECOMMERCE}}productservice"
+					],
+					"path": [
+						"products"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "update product",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoyNywiZW1haWwiOiJkZXZlbG9wZXJAa2FydGhpa25hcmF5YW4uaW4iLCJtb2JpbGUiOiI4MDk2Njc1NDAxIiwiZnVsbF9uYW1lIjoia2FydGhpayBuYXJheWFuIiwiZXhwIjoxNzA1NTc1NDQzLCJpYXQiOjE3MDI5ODM0NDN9.ReAKZzb31rzW1xIc-UQY1vuQvdZVuJoN5oJhQEygGvs",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "product_id",
+							"value": "1",
+							"type": "text"
+						},
+						{
+							"key": "name",
+							"value": "shoes",
+							"type": "text"
+						},
+						{
+							"key": "description",
+							"value": "running shoes",
+							"type": "text"
+						},
+						{
+							"key": "price",
+							"value": "2999",
+							"type": "text"
+						},
+						{
+							"key": "stock_quantity",
+							"value": "45",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{ECOMMERCE}}productservice/products",
+					"host": [
+						"{{ECOMMERCE}}productservice"
+					],
+					"path": [
+						"products"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "create order",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoyNiwiZW1haWwiOiJrcG90aHVyYWp1bGFAZ21haWwuY29tIiwibW9iaWxlIjo4MDk2Njc1NDAyLCJmdWxsX25hbWUiOiJzd2FtaW5hdGhhbiIsImV4cCI6MTcwNTYwOTY2MSwiaWF0IjoxNzAzMDE3NjYxfQ.V_BXko4B6SvI2fLDruc4pPQKbo1iGlDUQSFZhP2jqJQ",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "product_id",
+							"value": "1",
+							"type": "text"
+						},
+						{
+							"key": "quantity",
+							"value": "4",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{ECOMMERCE}}productservice/products/order",
+					"host": [
+						"{{ECOMMERCE}}productservice"
+					],
+					"path": [
+						"products",
+						"order"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "my orders",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoyNiwiZW1haWwiOiJrcG90aHVyYWp1bGFAZ21haWwuY29tIiwibW9iaWxlIjo4MDk2Njc1NDAyLCJmdWxsX25hbWUiOiJzd2FtaW5hdGhhbiIsImV4cCI6MTcwNTYwNzc1MCwiaWF0IjoxNzAzMDE1NzUwfQ.CCXR7GYBnJmBMXn3RyJNLH12PEKf3r_12HQnAXa5yoE",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": []
+				},
+				"url": {
+					"raw": "{{ECOMMERCE}}orderservice/orders",
+					"host": [
+						"{{ECOMMERCE}}orderservice"
+					],
+					"path": [
+						"orders"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "orderservice - S2S - direct test",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoyNiwiZW1haWwiOiJrcG90aHVyYWp1bGFAZ21haWwuY29tIiwibW9iaWxlIjo4MDk2Njc1NDAyLCJmdWxsX25hbWUiOiJzd2FtaW5hdGhhbiIsImV4cCI6MTcwNTYwNzc1MCwiaWF0IjoxNzAzMDE1NzUwfQ.CCXR7GYBnJmBMXn3RyJNLH12PEKf3r_12HQnAXa5yoE",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"product\":{\r\n        \"name\":\"shoes\",\r\n        \"price\":2999\r\n    },\r\n    \"user_data\":{\r\n        \"mobile\":8096675402,\r\n        \"email\":\"kpothurajula@gmail.com\"\r\n    },\r\n    \"quantity\":2\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{ECOMMERCE}}orderservice/orders",
+					"host": [
+						"{{ECOMMERCE}}orderservice"
+					],
+					"path": [
+						"orders"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
