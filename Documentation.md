@@ -41,3 +41,9 @@ Each service has `prometheus` metrics implemented
 * Listens on services mentioned in `Prometheus.yml` configuration file.
 * Open server IP with port number mentioned in .env to view the `health` of all services.
 * Targets section in Prometheus displays all services.
+
+### 6. API gateway - NGINX
+* Defined service endpoints with 2 instance endpoints for every service.
+* When one is down nginx picks available instances to service requests.
+* `Round Robin` default algorithms will reverse proxy the request to available instances.
+* `API rate limiting` implemented to prevent abuse and configured 5 requests a second for better testing.
